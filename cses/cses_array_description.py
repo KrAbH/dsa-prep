@@ -1,6 +1,7 @@
 import sys
 sys.setrecursionlimit(10**8)
 mod = 10**9 + 7
+#we only need to check with previous number, not necessarily both adjacent numbers
 class Solution:
     def __init__(self, n, m, arr):
         self.n = n
@@ -45,17 +46,67 @@ class Solution:
                         count %= mod
         self.mem[i][last_num] = count
         return count 
+
+    def count_arr_1(self, idx, prev):
+        # print(idx, prev)
+        if idx == self.n:
+            return 1
+        if self.mem[idx][prev] != -1:
+            return self.mem[idx][prev]
+        count = 0
+        if self.arr[idx] > 0:
+            if abs(self.arr[idx] - prev) <= 1:
+                count = self.count_arr_1(idx +1, self.arr[idx])
+                count %= mod
+        else:
+            if prev > 0:
+                candidates = [prev]
+                if prev -1 > 0:
+                    candidates.append(prev -1)
+                if prev + 1<= self.m:
+                    candidates.append(prev + 1)
+            else:
+                candidates = [i for i in range(1, self.m + 1)]
+            for candidate in candidates:
+                count += self.count_arr_1(idx +1, candidate)
+                count %= mod
+
+        self.mem[idx][prev] = count
+        return count 
+
+    def tabulation_solution(self):
+        dp = [[0 for _ in range(self.m + 1)] for _ in range(self.n + 1)]
+        for i in range(n, -1, -1):
+            for last_num in range(1, self.m + 1):
+                if i == self.n:
+                    dp[i][last_num] = 1
+                else:
+                    if self.arr[i] > 0:
+                        if abs(last_num - self.arr[i]) <=1:
+                            dp[i][last_num] = dp[i+1][self.arr[i]]
+                    else:
+                        for diff in [0, 1, -1]:
+                            curr = last_num + diff
+                            if 1 <= curr <= m:
+                                dp[i][last_num] += dp[i+1][curr]
+                dp[i][last_num] %= mod
+        ans = 0
+        # print(dp)
+        if self.arr[0] > 0:
+            return dp[1][self.arr[0]]
+        else:
+            for i in range(1, m+1):
+                ans += dp[1][i]
+                ans %= mod
+        return ans
+    
 if __name__ == "__main__":
     n, m = list(map(int, input().split()))
     arr = list(map(int, input().split()))
     ans = 0
     solver = Solution(n, m, arr)
-    # if arr[0] > 0:
-    #     ans += solver.count_arr(0, arr[0])
-    # else:
-    #     for i in range(1, m+1):
-    #         ans += solver.count_arr(0, i)
-    ans = solver.count_arr(0, arr[0])
-    
+    # ans = solver.count_arr_1(0, arr[0])
+    ans = solver.tabulation_solution()
+    # print(solver.mem)
     print(ans)
 
