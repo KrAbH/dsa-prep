@@ -24,9 +24,22 @@ class Solver:
         self.mem[amount] = count
         return count
     
+    def tabular_solution(self):
+        mem = [0]*(self.x+1)
+        for i in range(0, self.x+1):
+            if i ==0:
+                mem[i] = 1
+            else:
+                for coin in self.coins:
+                    if i - coin >= 0:
+                        mem[i] += mem[i - coin]
+                        mem[i] %= mod
+        return mem[self.x]%mod
+    
 if __name__ == "__main__":
     n, x = list(map(int, input().split()))
     coins = list(map(int, input().split()))
     solver = Solver(x, coins)
-    ans = solver.count_coin_combinations(x)
+    # ans = solver.count_coin_combinations(x)
+    ans = solver.tabular_solution()
     print(ans)
