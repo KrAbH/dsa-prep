@@ -27,3 +27,4 @@ if __name__ == "__main__":
     a, b = list(map(int, input().split()))
     solver = Solver(a, b)
     print(solver.min_rect_cut_mem(0, a, 0, b))
+    
