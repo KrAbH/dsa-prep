@@ -5,8 +5,8 @@ class Solver():
     def __init__(self, n, m):
         self.n = n
         self.m = m
-        self.mem = [[[[-1 for _ in range(self.m + 1)] for _ in range(self.m + 1)]for _ in range(self.n + 1)] for _ in range(self.n + 1)]
-        self.dp = [[-1 for _ in range(self.m + 1)] for _ in range(self.n + 1)]
+        # self.mem = [[[[-1 for _ in range(self.m + 1)] for _ in range(self.m + 1)]for _ in range(self.n + 1)] for _ in range(self.n + 1)]
+        # self.dp = [[-1 for _ in range(self.m + 1)] for _ in range(self.n + 1)]
 
     def min_rect_cut_mem(self, x_s, x_e, y_s, y_e):
         if x_e - x_s == y_e - y_s:
@@ -44,6 +44,7 @@ class Solver():
         tab = [[float("inf") for _ in range(self.m + 1)] for _ in range(self.n + 1)]
         for x in range(1, self.n +1):
             for y in range(1, self.m + 1):
+                # print(x, y)
                 if x == y:
                     tab[x][y] = 0
                 else:
