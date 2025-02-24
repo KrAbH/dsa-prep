@@ -10,12 +10,12 @@ class Solution:
         if total & 1 == 1:
             return 0
         tab = [[0 for _ in range(total+1 )] for _ in range(self.n + 2)]
-        tab[self.n + 1][total//2] = 1
-        for i in range(self.n, 0 , -1):
+        tab[self.n][total//2] = 1
+        for i in range(self.n-1, -1 , -1):
             for j in range(total+1):
                 tab[i][j] = tab[i+1][j] + tab[i+1][j+ i ] if j + i <= total else tab[i+1][j]
-                # tab[i][j] %= 10**9 + 7
-        return tab[1][0]
+                tab[i][j] %= 10**9 + 7
+        return tab[0][0]
     
 if __name__ == "__main__":
     n = int(input())

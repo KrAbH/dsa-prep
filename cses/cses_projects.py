@@ -21,7 +21,7 @@ class Solution:
                 lo = mid +1
         return ans
 
-    # instead of maintaing the last ending time we are using the ending time to trim our choices, of which intervals are possible when we choose it.
+    # instead of maintaing the last ending time which we are using the ending time to trim our choices, of which intervals are possible when we choose it.
     def projects_mem(self, i):
         if i == self.n:
             return 0
@@ -62,8 +62,7 @@ class Solution:
             tab[i] = max(tab[i], tab[i+1])
             # taking
             choices = self.bs(i+1, self.info[i][1])
-            for choice in range(choices, self.n + 1):
-                tab[i] = max(tab[i], self.info[i][2] + tab[choice])
+            tab[i] = max(tab[i], self.info[i][2] + tab[choices])
         return tab[0]
                 
 if __name__ == "__main__":
